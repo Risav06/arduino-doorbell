@@ -1,0 +1,40 @@
+// Pin definitions
+const int BUTTON_PIN = 2; // Pin connected to the push button
+const int BUZZER_PIN = 8; // Pin connected to the piezo buzzer
+const int LED_PIN = 13;   // Pin connected to the LED indicator
+
+void setup() {
+  // Initialize the button pin with an internal pull-up resistor
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+  
+  // Initialize output pins
+  pinMode(BUZZER_PIN, OUTPUT);
+  pinMode(LED_PIN, OUTPUT);
+}
+
+void loop() {
+  // Read the state of the button
+  int buttonState = digitalRead(BUTTON_PIN);
+
+  // Since we use INPUT_PULLUP, LOW means the button is pressed
+  if (buttonState == LOW) {
+    // Turn on the LED
+    digitalWrite(LED_PIN, HIGH);
+    
+    // Play a "Ding-Dong" sound
+    // "Ding" - High pitch (659 Hz = E5) for 300ms
+    tone(BUZZER_PIN, 659); 
+    delay(300);
+    
+    // "Dong" - Lower pitch (523 Hz = C5) for 500ms
+    tone(BUZZER_PIN, 523); 
+    delay(500);
+    
+    // Turn off the sound and LED
+    noTone(BUZZER_PIN);
+    digitalWrite(LED_PIN, LOW);
+    
+    // Brief cooldown delay to prevent accidental re-triggering
+    delay(500);
+  }
+}
